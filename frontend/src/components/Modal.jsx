@@ -1,0 +1,102 @@
+import { useEffect, useState } from "react";
+
+const Modal = (props) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedProduto, setEditedProduto] = useState(props.produto);
+
+    useEffect(() => {
+        setEditedProduto(props.produto);
+    }, [props.produto]);
+
+    const handleEdit = () => {
+        setIsEditing(true);
+    };
+
+    const handleSave = () => {
+        const payload = {
+            ...editedProduto,
+            idproduto: props.produto.idproduto,
+        };
+
+        if (!props.onUpdate) {
+            return;
+        }
+
+        props.onUpdate(props.produto.idproduto, payload)
+            .then(() => {
+                setIsEditing(false);
+                setEditedProduto(payload);
+                if (typeof props.setProduto === 'function') {
+                    props.setProduto(payload);
+                }
+            })
+            .catch(() => {
+                // mantém no modo edição para correções
+            });
+    };
+
+    const handleCancel = () => {
+        setEditedProduto(props.produto);
+        setIsEditing(false);
+    };
+
+    const handleDelete = () => {
+        props.onDelete(props.produto.idproduto);
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setEditedProduto({ ...editedProduto, [name]: value });
+    };
+
+    return(
+        <>
+            <div className="modal-overlay" onClick={props.fecharModal}>
+                <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+                    <button className="modal-close" onClick={props.fecharModal} aria-label="Fechar">✕</button>
+                    {isEditing ? (
+                        <>
+                            <p><strong>Nome:</strong> <input name="nome" value={editedProduto.nome} onChange={handleChange} /></p>
+                            <p><strong>Categoria:</strong>
+                                <select name="categoria" value={editedProduto.categoria || ''} onChange={handleChange}>
+                                    <option value="Alimentos">Alimentos</option>
+                                    <option value="Bebidas">Bebidas</option>
+                                    <option value="Limpeza">Limpeza</option>
+                                    <option value="Higiene">Higiene</option>
+                                    <option value="Hortifruti">Hortifruti</option>
+                                    <option value="Padaria">Padaria</option>
+                                </select>
+                            </p>
+                            <p><strong>Marca:</strong> <input name="marca" value={editedProduto.marca || ''} onChange={handleChange} /></p>
+                            <p><strong>Preço de Custo:</strong> <input name="preco_custo" value={editedProduto.preco_custo || ''} onChange={handleChange} /></p>
+                            <p><strong>Preço de Venda:</strong> <input name="preco_venda" value={editedProduto.preco_venda || ''} onChange={handleChange} /></p>
+                        </>
+                    ) : (
+                        <>
+                            <h2>{props.produto.nome}</h2>
+                            {props.produto.categoria && <p><strong>Categoria:</strong> {props.produto.categoria}</p>}
+                            {props.produto.marca && <p><strong>Marca:</strong> {props.produto.marca}</p>}
+                            {props.produto.preco_custo && <p><strong>Preço de Custo:</strong> {props.produto.preco_custo}</p>}
+                            {props.produto.preco_venda && <p><strong>Preço de Venda:</strong> {props.produto.preco_venda}</p>}
+                        </>
+                    )}
+                    <div className="modal-buttons">
+                        {isEditing ? (
+                            <>
+                                <button onClick={handleCancel}><i class="fa-solid fa-ban"></i></button>
+                                <button onClick={handleSave}><i class="fa-solid fa-check"></i></button>                               
+                            </>
+                        ) : (
+                            <>         
+                                <button onClick={handleDelete}><i className="fa-solid fa-trash"></i></button>
+                                <button onClick={handleEdit}><i className="fa-solid fa-pencil"></i></button>
+                            </>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+export default Modal;
