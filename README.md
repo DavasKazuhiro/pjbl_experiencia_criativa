@@ -28,28 +28,28 @@
     - Atualize o campo `password` para corresponder à sua senha local do MySQL.
     - Se necessário, ajuste também `host`, `user` e `database`.
 
-4. **Instale as dependências do backend**:
+4. **Instale as dependências do backend**:  
+Abra um Command Prompt no diretório do projeto e cole os seguintes comandos:
    ```
    cd backend
    npm install
    ```
 
-5. **Instale as dependências do frontend**:
+5. **Execute o backend**:
    ```
-   cd ../frontend
-   npm install
-   ```
-
-6. **Execute o backend**:
-   ```
-   cd backend
    npm start
    ```
    O servidor backend será iniciado na porta 8800.
 
-7. **Execute o frontend**:
+6. **Instale as dependências do frontend**:  
+Abra outro Command Prompt no diretório do projeto e cole os seguintes comandos:
    ```
    cd frontend
+   npm install
+   ```
+
+7. **Execute o frontend**:
+   ```
    npm run dev
    ```
    O frontend será iniciado na porta 5173 (padrão do Vite).
