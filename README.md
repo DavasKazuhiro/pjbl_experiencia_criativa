@@ -19,39 +19,42 @@
 1. **Clone o repositório** ou navegue até a pasta do projeto.
 
 2. **Configure o banco de dados**:
-    - Abra e copie o script SQL localizado em `bd/pjbl_bd.sql`
-    - Abra o MySql Workbench ou outro SGBD
-    - Cole e execute o script para criar o banco de dados `pjbl_davi_natume`, a tabela `produtos` e inserir dados iniciais.
+    - Abra o arquivo `bd/pjbl_bd.sql`.
+    - Abra o MySQL Workbench ou outro cliente MySQL.
+    - Execute o script para criar o banco de dados `pjbl_davi_natume`, a tabela `produtos` e inserir dados iniciais.
 
-3. **Instale as dependências do backend**:
-Abra um Command Prompt no diretório do projeto e cole os comandos:
+3. **Altere a senha do banco de dados**:
+    - Abra `backend/db.js`.
+    - Atualize o campo `password` para corresponder à sua senha local do MySQL.
+    - Se necessário, ajuste também `host`, `user` e `database`.
+
+4. **Instale as dependências do backend**:
    ```
    cd backend
-   npm i express nodemon cors mysql2
+   npm install
    ```
 
-4. **Instale as dependências do frontend**:
-Abra outro Command Prompt no diretório do projeto e cole os comandos:
+5. **Instale as dependências do frontend**:
    ```
    cd ../frontend
    npm install
    ```
 
-5. **Execute o backend**:
+6. **Execute o backend**:
    ```
    cd backend
    npm start
    ```
    O servidor backend será iniciado na porta 8800.
 
-6. **Execute o frontend**:
+7. **Execute o frontend**:
    ```
    cd frontend
    npm run dev
    ```
    O frontend será iniciado na porta 5173 (padrão do Vite).
 
-7. **Acesse o sistema**:
+8. **Acesse o sistema**:
    - Abra o navegador e vá para `http://localhost:5173`.
    - O sistema permitirá gerenciar produtos: adicionar, editar, excluir e visualizar.
 
