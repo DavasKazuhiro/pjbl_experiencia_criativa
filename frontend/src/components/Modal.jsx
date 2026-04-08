@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const Modal = (props) => {
-    const [isEditing, setIsEditing] = useState(!!props.isNew);
+    const [isEditing, setIsEditing] = useState(props.isNew);
     const [editedProduto, setEditedProduto] = useState(props.produto);
 
     useEffect(() => {

@@ -12,13 +12,13 @@ const ListaProdutos = (props) => {
         setAbrirModalNovo(false);
     }
 
-     function fecharModal() {
+    function fecharModal() {
         setProdutoSelecionado(null);
         setAbrirModalNovo(false);
     }
 
     const handleUpdate = (id, updatedProduto) => {
-        return fetch(`http://localhost:8800/produtos/update/${id}`, {
+        return fetch(`http://localhost:8800/produtos/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ const ListaProdutos = (props) => {
     };
 
     const handleCreate = (newProduto) => {
-        return fetch('http://localhost:8800/produtos/create', {
+        return fetch('http://localhost:8800/produtos/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ const ListaProdutos = (props) => {
 
     const handleDelete = (id) => {
         if (window.confirm('Tem certeza que deseja deletar este produto?')) {
-            fetch(`http://localhost:8800/produtos/delete/${id}`, {
+            fetch(`http://localhost:8800/produtos/${id}`, {
                 method: 'DELETE',
             })
             .then(res => res.json())
