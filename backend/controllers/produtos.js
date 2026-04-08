@@ -9,6 +9,21 @@ export const getProdutos = (_, res) => {
     });
 };
 
+export const createProduto = (req, res) => {
+    const q = "INSERT INTO produtos (`nome`, `categoria`, `marca`, `preco_custo`, `preco_venda`) VALUES (?, ?, ?, ?, ?)";
+    const values = [
+        req.body.nome,
+        req.body.categoria,
+        req.body.marca,
+        req.body.preco_custo,
+        req.body.preco_venda,
+    ];
+    db.query(q, values, (err, data) => {
+        if (err) return res.json(err);
+        return res.status(201).json({ idproduto: data.insertId, ...req.body });
+    });
+};
+
 export const updateProduto = (req, res) => {
     const q = "UPDATE produtos SET nome = ?, categoria = ?, marca = ?, preco_custo = ?, preco_venda = ? WHERE idproduto = ?";
     const values = [

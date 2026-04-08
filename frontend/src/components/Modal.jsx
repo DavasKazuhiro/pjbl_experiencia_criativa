@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 
 const Modal = (props) => {
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] = useState(!!props.isNew);
     const [editedProduto, setEditedProduto] = useState(props.produto);
 
     useEffect(() => {
         setEditedProduto(props.produto);
-    }, [props.produto]);
+        if (props.isNew) {
+            setIsEditing(true);
+        } else {
+            setIsEditing(false);
+        }
+    }, [props.produto, props.isNew]);
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -15,8 +20,19 @@ const Modal = (props) => {
     const handleSave = () => {
         const payload = {
             ...editedProduto,
-            idproduto: props.produto.idproduto,
         };
+
+        if (props.isNew) {
+            if (!props.onCreate) {
+                return;
+            }
+
+            props.onCreate(payload)
+                .catch(() => {
+                    // mantém no modo edição para correções
+                });
+            return;
+        }
 
         if (!props.onUpdate) {
             return;
@@ -36,6 +52,10 @@ const Modal = (props) => {
     };
 
     const handleCancel = () => {
+        if (props.isNew) {
+            props.fecharModal();
+            return;
+        }
         setEditedProduto(props.produto);
         setIsEditing(false);
     };
@@ -49,14 +69,17 @@ const Modal = (props) => {
         setEditedProduto({ ...editedProduto, [name]: value });
     };
 
+    const showForm = props.isNew || isEditing;
+
     return(
         <>
             <div className="modal-overlay" onClick={props.fecharModal}>
                 <div className="modal-card" onClick={(e) => e.stopPropagation()}>
                     <button className="modal-close" onClick={props.fecharModal} aria-label="Fechar">✕</button>
-                    {isEditing ? (
+                    <h2>{props.isNew ? 'Novo Produto' : props.produto.nome}</h2>
+                    {showForm ? (
                         <>
-                            <p><strong>Nome:</strong> <input name="nome" value={editedProduto.nome} onChange={handleChange} /></p>
+                            <p><strong>Nome:</strong> <input name="nome" value={editedProduto.nome || ''} onChange={handleChange} /></p>
                             <p><strong>Categoria:</strong>
                                 <select name="categoria" value={editedProduto.categoria || ''} onChange={handleChange}>
                                     <option value="Alimentos">Alimentos</option>
@@ -73,7 +96,6 @@ const Modal = (props) => {
                         </>
                     ) : (
                         <>
-                            <h2>{props.produto.nome}</h2>
                             {props.produto.categoria && <p><strong>Categoria:</strong> {props.produto.categoria}</p>}
                             {props.produto.marca && <p><strong>Marca:</strong> {props.produto.marca}</p>}
                             {props.produto.preco_custo && <p><strong>Preço de Custo:</strong> {props.produto.preco_custo}</p>}
@@ -81,10 +103,10 @@ const Modal = (props) => {
                         </>
                     )}
                     <div className="modal-buttons">
-                        {isEditing ? (
+                        {showForm ? (
                             <>
-                                <button onClick={handleCancel}><i class="fa-solid fa-ban"></i></button>
-                                <button onClick={handleSave}><i class="fa-solid fa-check"></i></button>                               
+                                <button onClick={handleCancel}><i className="fa-solid fa-ban"></i></button>
+                                <button onClick={handleSave}><i className="fa-solid fa-check"></i></button>
                             </>
                         ) : (
                             <>         
