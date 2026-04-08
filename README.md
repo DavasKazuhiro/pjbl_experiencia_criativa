@@ -1,3 +1,5 @@
+
+
 ## Tecnologias Utilizadas
 
 - **Backend**: Node.js, Express, MySQL
@@ -14,19 +16,22 @@
 
 ### Passo a Passo
 
-1. **Clone o repositório** (se aplicável) ou navegue até a pasta do projeto.
+1. **Clone o repositório** ou navegue até a pasta do projeto.
 
 2. **Configure o banco de dados**:
-   - Crie um banco de dados MySQL chamado `pjbl`.
-   - Execute o script SQL localizado em `bd/pjbl_bd.sql` para criar a tabela `produtos` e inserir dados iniciais.
+    - Abra e copie o script SQL localizado em `bd/pjbl_bd.sql`
+    - Abra o MySql Workbench ou outro SGBD
+    - Cole e execute o script para criar o banco de dados `pjbl_davi_natume`, a tabela `produtos` e inserir dados iniciais.
 
 3. **Instale as dependências do backend**:
+Abra um Command Prompt no diretório do projeto e cole os comandos:
    ```
    cd backend
-   npm install
+   npm i express nodemon cors mysql2
    ```
 
 4. **Instale as dependências do frontend**:
+Abra outro Command Prompt no diretório do projeto e cole os comandos:
    ```
    cd ../frontend
    npm install
