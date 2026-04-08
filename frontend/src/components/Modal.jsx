@@ -4,6 +4,12 @@ const Modal = (props) => {
     const [isEditing, setIsEditing] = useState(props.isNew);
     const [editedProduto, setEditedProduto] = useState(props.produto);
 
+    const isIntegerValue = (value) => {
+        if (value === '' || value === null || value === undefined) return false;
+        const numberValue = Number(value);
+        return Number.isInteger(numberValue) && !String(value).includes('.');
+    };
+
     useEffect(() => {
         setEditedProduto(props.produto);
         if (props.isNew) {
@@ -22,6 +28,14 @@ const Modal = (props) => {
             ...editedProduto,
         };
 
+        if (!isIntegerValue(payload.preco_custo) || !isIntegerValue(payload.preco_venda)) {
+            alert('Preço de custo e preço de venda devem ser valores inteiros.');
+            return;
+        }
+
+        payload.preco_custo = Number(payload.preco_custo);
+        payload.preco_venda = Number(payload.preco_venda);
+
         if (props.isNew) {
             if (!props.onCreate) {
                 return;
@@ -29,7 +43,6 @@ const Modal = (props) => {
 
             props.onCreate(payload)
                 .catch(() => {
-                    // mantém no modo edição para correções
                 });
             return;
         }
@@ -91,8 +104,8 @@ const Modal = (props) => {
                                 </select>
                             </p>
                             <p><strong>Marca:</strong> <input name="marca" value={editedProduto.marca || ''} onChange={handleChange} /></p>
-                            <p><strong>Preço de Custo:</strong> <input name="preco_custo" value={editedProduto.preco_custo || ''} onChange={handleChange} /></p>
-                            <p><strong>Preço de Venda:</strong> <input name="preco_venda" value={editedProduto.preco_venda || ''} onChange={handleChange} /></p>
+                            <p><strong>Preço de Custo:</strong> <input type="number" step="1" min="0" name="preco_custo" value={editedProduto.preco_custo || ''} onChange={handleChange} /></p>
+                            <p><strong>Preço de Venda:</strong> <input type="number" step="1" min="0" name="preco_venda" value={editedProduto.preco_venda || ''} onChange={handleChange} /></p>
                         </>
                     ) : (
                         <>
